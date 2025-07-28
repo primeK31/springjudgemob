@@ -1,13 +1,13 @@
-package com.example.spring_boot;
+package com.example.spring_boot.code.reqresp;
 
-public class CodeResponse {
+public class CodeSubmissionResponse {
     private String stdout;
     private String stderr;
     private int exitCode;
 
-    public CodeResponse() {} // ОБЯЗАТЕЛЕН
+    public CodeSubmissionResponse() {} // ОБЯЗАТЕЛЕН
 
-    public CodeResponse(String stdout, String stderr, int exitCode) {
+    public CodeSubmissionResponse(String stdout, String stderr, int exitCode) {
         this.stdout = stdout;
         this.stderr = stderr;
         this.exitCode = exitCode;
