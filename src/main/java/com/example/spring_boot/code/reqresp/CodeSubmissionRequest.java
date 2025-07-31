@@ -1,26 +1,32 @@
 package com.example.spring_boot.code.reqresp;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class CodeSubmissionRequest {
-    private String code;
-    private String output;
-    private Integer exitCode;
-    private String language;
-    private Long executionTimeMs;
+    @NotBlank(message = "Source code cannot be empty")
+    private String sourceCode;
+
+    private String language = "cpp"; // Default language
+    private String input; // Optional input for the program
+    private String problemId; // Optional problem identifier
 
     public CodeSubmissionRequest() {}
 
-    public String getCode() { return code; }
-    public void setCode(String code) { this.code = code; }
+    public CodeSubmissionRequest(String sourceCode, String language) {
+        this.sourceCode = sourceCode;
+        this.language = language;
+    }
 
-    public String getOutput() { return output; }
-    public void setOutput(String output) { this.output = output; }
-
-    public Integer getExitCode() { return exitCode; }
-    public void setExitCode(Integer exitCode) { this.exitCode = exitCode; }
+    // Getters and Setters
+    public String getSourceCode() { return sourceCode; }
+    public void setSourceCode(String sourceCode) { this.sourceCode = sourceCode; }
 
     public String getLanguage() { return language; }
     public void setLanguage(String language) { this.language = language; }
 
-    public Long getExecutionTimeMs() { return executionTimeMs; }
-    public void setExecutionTimeMs(Long executionTimeMs) { this.executionTimeMs = executionTimeMs; }
+    public String getInput() { return input; }
+    public void setInput(String input) { this.input = input; }
+
+    public String getProblemId() { return problemId; }
+    public void setProblemId(String problemId) { this.problemId = problemId; }
 }
