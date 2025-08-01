@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:latest
+    container_name: judgemob_db
+    environment:
+      POSTGRES_DB: mobdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - judgemob-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U codejudge_user -d codejudge"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: judgemob_app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mobdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: pass123
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+
+      SERVER_PORT: 8080
+      LOGGING_LEVEL_COM_EXAMPLE: DEBUG
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
+    networks:
+      - judgemob-network
+    restart: unless-stopped
+
+  gcc-preloader:
+    image: gcc:13
+    container_name: gcc_preloader
+    command: ["echo", "GCC image preloaded"]
+    networks:
+      - judgemob-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  judgemob-network:
+    driver: bridge

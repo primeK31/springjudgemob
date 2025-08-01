@@ -21,10 +21,6 @@ public class CodeJudgeRepository {
         return compileAndRun(sourceCode, "cpp", null, true);
     }
 
-    public CodeSubmissionResponse compileAndRun(String sourceCode, String language) {
-        return compileAndRun(sourceCode, language, null, true);
-    }
-
     public CodeSubmissionResponse compileAndRun(String sourceCode, String language, String input) {
         return compileAndRun(sourceCode, language, input, true);
     }
@@ -96,7 +92,7 @@ public class CodeJudgeRepository {
     private CodeSubmissionResponse executeCommand(List<String> command, String sourceCode, String language,
                                                   boolean saveToDatabase, long startTime) throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder(command);
-        processBuilder.redirectErrorStream(false); // Separate stdout and stderr
+        processBuilder.redirectErrorStream(false);
         Process process = processBuilder.start();
 
         boolean finished = process.waitFor(5, TimeUnit.SECONDS);
@@ -129,10 +125,9 @@ public class CodeJudgeRepository {
                     .map(Path::toFile)
                     .forEach(File::delete);
         } catch (Exception e) {
-            // Ignore cleanup errors
+
         }
 
-        // Save to database if requested
         if (saveToDatabase) {
             long executionTime = System.currentTimeMillis() - startTime;
             String finalOutput = output.isEmpty() ? errorOutput : output + (errorOutput.isEmpty() ? "" : "\nErrors:\n" + errorOutput);
@@ -151,12 +146,10 @@ public class CodeJudgeRepository {
         return new CodeSubmissionResponse(output, errorOutput, exitCode);
     }
 
-    // Method to run without saving to database
     public CodeSubmissionResponse compileAndRunWithoutSaving(String sourceCode, String language) {
         return compileAndRun(sourceCode, language, null, false);
     }
 
-    // Method to test code with input
     public CodeSubmissionResponse testCode(String sourceCode, String language, String input) {
         return compileAndRun(sourceCode, language, input, true);
     }

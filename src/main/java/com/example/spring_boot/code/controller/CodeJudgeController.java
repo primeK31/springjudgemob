@@ -50,10 +50,12 @@ public class CodeJudgeController {
         return ResponseEntity.ok(response);
     }
 
+    /*
     @GetMapping("/submission/{id}")
     public ResponseEntity<?> getSubmission(@PathVariable Long id) {
         return codeSubmissionService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+     */
 }

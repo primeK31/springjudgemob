@@ -18,6 +18,6 @@ public class CodeJudgeService {
     }
 
     public CodeSubmissionResponse judgeCode(CodeSubmissionRequest request) {
-        return codeJudgeRepository.compileAndRun(request.getCode());
+        return codeJudgeRepository.compileAndRun(request.getSourceCode());
     }
 }

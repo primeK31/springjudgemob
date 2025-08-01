@@ -3,6 +3,7 @@ package com.example.spring_boot.code.controller;
 
 import com.example.spring_boot.code.model.CodeSubmission;
 import com.example.spring_boot.code.reqresp.CodeSubmissionRequest;
+import com.example.spring_boot.code.reqresp.CodeSubmissionResponse;
 import com.example.spring_boot.code.service.CodeSubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,18 +20,20 @@ public class CodeSubmissionController {
 
     @Autowired
     private CodeSubmissionService codeSubmissionService;
-
+    /*
     @PostMapping
     public ResponseEntity<CodeSubmission> createSubmission(@RequestBody CodeSubmissionRequest request) {
+        CodeSubmissionResponse response = new CodeSubmissionResponse();
         CodeSubmission saved = codeSubmissionService.saveSubmission(
-                request.getCode(),
-                request.getOutput(),
-                request.getExitCode(),
+                request.getSourceCode(),
+                response.getOutput(),
+                response.getExitCode(),
                 request.getLanguage(),
-                request.getExecutionTimeMs()
+                response.getExecutionTimeMs()
         );
         return ResponseEntity.ok(saved);
     }
+     */
 
     @GetMapping("/{id}")
     public ResponseEntity<CodeSubmission> getSubmission(@PathVariable Long id) {
